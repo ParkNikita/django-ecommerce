@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="text-gray-600 body-font flex justify-center">
+  <div class="container px-20 py-20">
+    <div class="container p-5 flex items-center md:flex-row rounded-lg flex-col bg-white">
+      <div class="flex items-center flex-shrink-0 space-x-4">
+        <div class="inline-flex py-3 px-5 rounded-lg items-center focus:outline-none">
+            <a href="{% url 'store:index' %}" class="bg-transparent hover:bg-gray-600 text-gray-600 font-semibold hover:text-white py-2 px-4 border border-gray-600 hover:border-transparent rounded">
+              <span class="title-font font-medium"> --- Continue shopping </span>
+            </a>
+        </div>
+        <div class="bg-gray-100 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-200 focus:outline-none">
+          <span class="ml-4 flex items-start flex-col leading-none">
+            <span class="text-xs text-gray-600 mb-1">Items:</span>
+            <span class="title-font font-medium">{{ order.get_total_items }}</span>
+          </span>
+        </div>
+        <div class="bg-gray-100 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-200 focus:outline-none">
+          <span class="ml-4 flex items-start flex-col leading-none">
+            <span class="text-xs text-gray-600 mb-1">Total Price</span>
+            <span class="title-font font-medium">${{ order.get_total_price }}</span>
+          </span>
+        </div>
+      </div>
+      <div class="flex md:ml-auto md:mr-0 mx-auto items-center flex-shrink-0 space-x-4">
+        {% if order.get_total_items != 0 %}
+        <a href="{% url 'store:checkout' %}" class="bg-green-500 inline-flex py-3 px-5 rounded-lg items-center hover:bg-green-600 focus:outline-none">
+          <span class="title-font font-medium">Checkout</span>
+        </a>
+        {% endif %}
+
+      </div>   
+    </div>
+
+    <div class="bg-white rounded-lg overflow-hidden mt-5 p-5 relative">
+      <table class="table-auto w-full text-left whitespace-no-wrap">
+        <thead>
+          <tr>
+            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Image</th>
+            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Item</th>
+            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Price</th>
+            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Quantity</th>
+            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% if order %}
+            {% for item in order.orderitem_set.all %}
+          <tr class="border border-gray bg-white">
+            <td class="px-4 py-3"><img alt="ecommerce" class="object-cover object-center w-20 h-22 p-1" src="{{ item.product.imageUrl }}"></td>
+            <td class="px-4 py-3">{{ item.product.name }}</td>
+            <td class="px-4 py-3">{{ item.product.price }}$</td>
+            <td class="px-4 py-3 text-lg text-gray-900">
+              {{ item.quantity }}
+
+              <button data-product="{{ item.product.id }}" data-action="add" class="inline-flex items-center bg-gray-200 border-0 py-1 px-1 focus:outline-none hover:bg-gray-300 rounded text-black update-cart">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </button>
+              <button data-product="{{ item.product.id }}" data-action="remove" class="inline-flex items-center bg-gray-200 border-0 py-1 px-1 focus:outline-none hover:bg-gray-300 rounded text-black update-cart">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+                </svg>
+              </button>
+            </td>
+            <td class="px-4 py-3 text-lg text-gray-900">{{ item.get_total_price }}$</td>
+          </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+{% endblock content %}

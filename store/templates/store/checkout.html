@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{% block content %}
+
+<section class="text-gray-600 body-font relative">
+  <div class="container px-5 py-24 mx-auto flex sm:flex-nowrap flex-wrap">
+    <div class="lg:w-2/3 md:w-1/2 bg-white rounded-lg overflow-hidden sm:mr-10 p-8 relative">
+        <table class="table-auto w-full text-left whitespace-no-wrap">
+            <thead>
+              <tr>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">Image</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Item</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Price</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Quantity</th>
+                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for item in order.orderitem_set.all %}
+              <tr class="border border-gray bg-white">
+                <td class="px-4 py-3"><img alt="ecommerce" class="object-cover object-center w-20 h-22 p-1" src="{{ item.product.imageUrl }}"></td>
+                <td class="px-4 py-3">{{ item.product.name }}</td>
+                <td class="px-4 py-3">{{ item.product.price }}$</td>
+                <td class="px-4 py-3 text-lg text-gray-900">
+                  {{ item.quantity }}
+                </td>
+                <td class="px-4 py-3 text-lg text-gray-900">{{ item.get_total_price }}$</td>
+              </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    <div class="lg:w-1/3 md:w-1/2 bg-white flex flex-col md:ml-auto w-full md:p-8 mt-8 md:mt-0">
+        <div class="mb-5">
+            <div class="bg-gray-100 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-200 focus:outline-none">
+                <span class="ml-4 flex items-start flex-col leading-none">
+                  <span class="text-x text-black font-bold mb-1">Items:</span>
+                  <span class="title-font font-bold">{{ order.get_total_items }}</span>
+                </span>
+              </div>
+              <div class="bg-gray-100 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-200 focus:outline-none">
+                <span class="ml-4 flex items-start flex-col leading-none">
+                  <span class="text-x text-black font-bold mb-1">Total Price</span>
+                  <span class="title-font font-bold">${{ order.get_total_price }}</span>
+                </span>
+              </div>
+        </div>
+
+      <div id="shipping-info" class="relative mb-4">
+        <label for="message" class="leading-7 text-sm text-gray-600">Shipping information</label>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy}}
+            <button class="flex text-white bg-blue-600 border-0 py-2 px-6 focus:outline-none hover:bg-blue-500 rounded">Submit</button>
+        </form>   
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="text/javascript">
+    var shipping = '{{ order.shipping }}'
+
+    if (shipping == 'False') {
+        document.getElementById('shipping-info').innerHTML = '<form method="POST"> {% csrf_token %}  <label for="name" class="leading-7 text-sm text-gray-600">Name</label> {{ form.name }} <br> <label for="email" class="leading-7 text-sm text-gray-600">Email</label> {{ form.email }} <input type="hidden" value="digit" type="text" name="address" maxlength="200"> <input type="hidden" value="digit" type="text" name="city" maxlength="200"> <input type="hidden" value="digit" type="text" name="country" maxlength="200"> <input type="hidden" value="digit" type="text" name="zip_code" maxlength="200"> <button class="flex text-white bg-blue-600 border-0 py-2 px-6 focus:outline-none hover:bg-blue-500 rounded">Submit</button> </form> '
+    }
+    
+</script>
+
+{% endblock content %}

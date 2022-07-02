@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <script>
+        var user = '{{ request.user }}'
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script>
+    
+    <title>E-Commerce</title>
+</head>
+<body>
+
+    <header class="text-white body-font bg-black">
+        <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+            <a class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+                <img src="{% static 'images/logo.png' %}" width="50px" height="50px" alt="">
+                <span class="ml-3 text-xl">E-Commerce</span>
+            </a>
+            <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+                <a href="{% url 'store:index' %}" class="mr-5 hover:text-gray-300">Store</a>
+                <a class="mr-5 hover:text-gray-300">Second Link</a>
+                <a class="mr-5 hover:text-gray-300">Third Link</a>
+                <a class="mr-5 hover:text-gray-300">Fourth Link</a>
+            </nav>
+            
+            {% if request.user.is_authenticated %}
+            <p> You are logged as: {{ request.user.username }}</p>
+            <a href = '{% url "logout" %}' class="inline-flex items-center mx-5 bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-black mt-4 md:mt-0">
+            Logout
+            </a>
+            <a href = '{% url "signup" %}' class="mx-5 inline-flex items-center bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-black mt-4 md:mt-0">
+                Sign Up
+            </a>  
+            
+            {% else %}
+            
+            <a href = '{% url "login" %}' class="mx-5 inline-flex items-center bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-black mt-4 md:mt-0">
+                Login
+            </a>
+            <a href = '{% url "signup" %}' class="mx-5 inline-flex items-center bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-black mt-4 md:mt-0">
+                Sign Up
+            </a>  
+                
+            {% endif %} 
+
+            
+            <a href="{% url 'store:cart' %}" class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-gray-500 mt-4 md:mt-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="black">
+                    <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                </svg>
+                <div class="text-black">Cart</div>
+                <svg fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
+    </header>
+
+
+    {% block content %}
+    {% endblock content %}
+    
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+</body>
+</html>

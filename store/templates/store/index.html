@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<section class="text-gray-600 body-font">
+  <div class="container px-20 py-20 mx-auto">
+    <div class="flex flex-wrap -m-5">
+        {% for product in products %}
+            <div class="lg:w-1/6 md:w-1/2 mb-3 w-full border border-gray bg-white">      
+                <a href="{% url 'store:product-detail' product.id %}" class="flex flex-col items-center">
+                        <img alt="ecommerce" class="object-cover object-center w-full p-1" src="{{ product.imageUrl }}">
+                    
+                    <div class="flex flex-col items-center">
+                        {% if product.category %}
+                        <h3 class="text-gray-500 text-x tracking-widest title-font mb-1">{{ product.category }}</h3>
+                        {% else %}
+                        <h3 class="text-gray-300 text-x tracking-widest title-font mb-1">.</h3>
+                        {% endif %}
+                        <h2 class="text-black title-font text-lg font-medium">{{ product.name }}</h2>
+                        <p class="text-blue-800 title-font text-lg font-medium">{{ product.price }}$</p>
+                </a> 
+                    {% if request.user.is_authenticated %}
+                    {% if product.name in cart %}
+                    <button data-product="{{ product.id }}" data-action="add" class="bg-transparent my-2 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-10 border border-blue-500 hover:border-transparent rounded update-cart">
+                        + 1
+                    </button>
+                    {% else %}
+                    <button data-product="{{ product.id }}" data-action="add" class="bg-transparent my-2 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-10 border border-blue-500 hover:border-transparent rounded update-cart">
+                        Add to cart
+                    </button>
+                    {% endif %}
+  
+                    {% else %}
+                    <a href="{% url 'login' %}" data-product="{{ product.id }}" data-action="add" class="bg-transparent my-2 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-10 border border-blue-500 hover:border-transparent rounded update-cart">
+                        Add to cart
+                    </a>
+                    {% endif %} 
+                    </div>
+                
+            </div>
+        {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
