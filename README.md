@@ -15,6 +15,8 @@ The website displays products. Users can add and remove products to/from their c
 
 # Getting started
 
+### python 3.10 Django 4.0.5
+
 To run this project you will need to set your environment variables.
 
 1. run **python -m venv env** inside the main django-ecommerce folder to create a virtual environment.
