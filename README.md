@@ -19,14 +19,14 @@ The website displays products. Users can add and remove products to/from their c
 
 To run this project you will need to set your environment variables.
 
-1. run **python -m venv env** inside the main django-ecommerce folder to create a virtual environment.
+1. run **`python -m venv env`** inside the main django-ecommerce folder to create a virtual environment.
 
 2. to activate your environment run:
 
-  On Windows using the Command Prompt: **path\to\env\Scripts\activate.bat**
+  On Windows using the Command Prompt: **`path\to\env\Scripts\activate.bat`**
 
-  On Unix or MacOS, using the bash shell: **source /path/to/env/bin/activate**
+  On Unix or MacOS, using the bash shell: **`source /path/to/env/bin/activate`**
 
-3. install all dependencies by running **python -m pip install -r requirements.txt**
+3. install all dependencies by running **`python -m pip install -r requirements.txt`**
 
-4. run **python manage.py runserver**
+4. run **`python manage.py runserver`**
